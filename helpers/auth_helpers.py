@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from locators.locators import LoginLocators, RegistrationLocators
+from helpers.generators import generate_unique_email
 
 logger = logging.getLogger(__name__)
 

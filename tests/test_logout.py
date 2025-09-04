@@ -1,22 +1,44 @@
+import pytest
 from locators.locators import LoginLocators, NavigationLocators, ProfileLocators
 from helpers.generators import generate_unique_email
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
+from helpers.auth_helpers import register_user, login_user
 
-def test_logout(driver):
-    email = generate_unique_email()
-    password = "test1234"
-    from tests.test_login import register_user
-    register_user(driver, email, password)
 
-    driver.get("https://stellarburgers.nomoreparties.site/login")
-    driver.find_element(*LoginLocators.EMAIL_INPUT).send_keys(email)
-    driver.find_element(*LoginLocators.PASSWORD_INPUT).send_keys(password)
-    driver.find_element(*LoginLocators.SUBMIT_BUTTON).click()
-    time.sleep(1)
+class TestLogout:
+    def test_logout(self, driver):
+        """Тест выхода из системы"""
+        # Инициализация WebDriverWait
+        wait = WebDriverWait(driver, 10)
 
-    wait = WebDriverWait(driver, 5)
-    driver.find_element(*NavigationLocators.PROFILE_BUTTON).click()
-    wait.until(EC.element_to_be_clickable(ProfileLocators.LOGOUT_BUTTON)).click()
+        # Генерация уникальных данных для регистрации
+        email = generate_unique_email()
+        password = "TestPassword123"
 
+        # Регистрация пользователя
+        register_user(driver, email, password)
+
+        # Вход пользователя
+        login_user(driver, email, password)
+
+        # Переход в профиль
+        wait.until(EC.element_to_be_clickable(NavigationLocators.PROFILE_BUTTON)).click()
+
+        # Ожидание загрузки страницы профиля
+        wait.until(EC.url_contains("/account/profile"))
+
+        # Выход из системы
+        logout_button = wait.until(EC.element_to_be_clickable(ProfileLocators.LOGOUT_BUTTON))
+        logout_button.click()
+
+        # Проверка, что произошел переход на страницу логина
+        wait.until(EC.url_to_be("https://stellarburgers.nomoreparties.site/login"))
+
+        # Дополнительная проверка - наличие элементов формы входа
+        email_input = wait.until(EC.visibility_of_element_located(LoginLocators.EMAIL_INPUT))
+        password_input = wait.until(EC.visibility_of_element_located(LoginLocators.PASSWORD_INPUT))
+
+        assert email_input.is_displayed(), "Поле email не отображается после выхода"
+        assert password_input.is_displayed(), "Поле password не отображается после выхода"
+        assert "login" in driver.current_url, "URL не соответствует странице логина"
