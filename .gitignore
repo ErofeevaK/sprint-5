@@ -1,0 +1,71 @@
+# Виртуальные окружения
+.venv/
+venv/
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Системные файлы macOS
+.DS_Store
+
+# Логи и временные файлы
+*.log
+chromedriver.log
+geckodriver.log
+*.pid
+*.seed
+*.pid.lock
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Папки сборки
+build/
+dist/
+*.egg-info/
+
+# Покрытие и кэш pytest
+.coverage
+htmlcov/
+.pytest_cache/
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sublime-workspace
+*.sublime-project
+
+# Бинарники, медиа, архивы и документы — не нужны в репозитории
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.exe
+*.dll
+*.so
+*.dylib
+*.jar
+*.war
+*.ear
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+*.csv
+*.json
+*.xml
+*.mp3
+*.mp4
+*.wav
+*.avi
+*.mov
+*.iso
